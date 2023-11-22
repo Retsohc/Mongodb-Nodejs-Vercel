@@ -1,10 +1,10 @@
+const { validationResult } = require('express-validator');
 const User = require('../models/user_model');
 
-
-//Controlador para obtener todas las cuentas registradas
 const getAllAccounts = async (req, res) => {
     try {
         const users = await User.find({}, '-password');
+
         if (users.length > 0) {
             res.json({ users });
         } else {
@@ -16,8 +16,13 @@ const getAllAccounts = async (req, res) => {
     }
 };
 
-//Controlador para el inicio de sesión
 const login = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), error: true });
+    }
+
     const { username, password } = req.body;
 
     try {
@@ -25,7 +30,7 @@ const login = async (req, res) => {
 
         if (user) {
             req.session = user;
-            res.json({ message: `Inicio de sesión exitoso como: ${user.role}` });
+            res.json({ message: `Inicio de sesión exitoso como: ${user.role}`, role: user.role });
         } else {
             res.json({ message: 'Nombre de usuario o contraseña incorrectos' });
         }
@@ -35,8 +40,13 @@ const login = async (req, res) => {
     }
 };
 
-//Controlador para registrar una cuenta
 const registerAccount = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), error: true });
+    }
+
     const { username, name, role, password, reservedword } = req.body;
 
     try {
@@ -45,6 +55,7 @@ const registerAccount = async (req, res) => {
         if (existingUser) {
             return res.json({ message: 'El usuario ya existe, ingresa otro...' });
         }
+
         const newUser = new User({ username, name, role, password, reservedword });
         await newUser.save();
         res.json({ message: 'Usuario agregado correctamente' });
@@ -53,8 +64,13 @@ const registerAccount = async (req, res) => {
     }
 };
 
-//Controlador para cambiar la contraseña
 const forgotPassword = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), error: true });
+    }
+
     const { username, reservedword, newPassword } = req.body;
 
     try {

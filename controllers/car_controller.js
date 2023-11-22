@@ -1,8 +1,13 @@
+const { validationResult } = require('express-validator');
 const Car = require('../models/car_model');
 
-
-//Controlador para la creación de un auto
 const createCar = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), error: true });
+    }
+
     const { platenumber, brand, status, dailyvalue } = req.body;
 
     try {
@@ -20,8 +25,7 @@ const createCar = async (req, res) => {
     }
 };
 
-//Controlador para obtener la lista de autos disponibles
-const getCars = async (req, res) => {
+const getAvailableCars = async (req, res) => {
     try {
         const cars = await Car.find({ status: 'disponible' });
         res.json({ cars });
@@ -30,7 +34,6 @@ const getCars = async (req, res) => {
     }
 };
 
-//Controlador para buscar un auto específico
 const getCarByPlateNumber = async (req, res) => {
     try {
         const car = await Car.findOne({ platenumber: req.params.platenumber });
@@ -45,17 +48,18 @@ const getCarByPlateNumber = async (req, res) => {
     }
 };
 
-//Controlador para actualizar un auto
 const updateCar = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), error: true });
+    }
+
     try {
-        const updatedCar = await Car.findOneAndUpdate(
-            { platenumber: req.params.platenumber },
-            {
-                brand: req.body.brand,
-                dailyvalue: req.body.dailyvalue,
-            },
-            { new: true }
-        );
+        const updatedCar = await Car.findOneAndUpdate({ platenumber: req.params.platenumber }, {
+            brand: req.body.brand,
+            dailyvalue: req.body.dailyvalue
+        }, { new: true });
 
         if (!updatedCar) {
             return res.status(404).json({ error: 'No se encontró el automóvil para actualizar' });
@@ -67,7 +71,6 @@ const updateCar = async (req, res) => {
     }
 };
 
-// Controlador para eliminar un auto
 const deleteCar = async (req, res) => {
     try {
         const deletedCar = await Car.findOneAndDelete({ platenumber: req.params.platenumber });
@@ -82,4 +85,4 @@ const deleteCar = async (req, res) => {
     }
 };
 
-module.exports = {createCar, getCars, getCarByPlateNumber, updateCar, deleteCar};
+module.exports = {createCar, getAvailableCars, getCarByPlateNumber, updateCar, deleteCar};
