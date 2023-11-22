@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+
+
 const rentSchema = new mongoose.Schema({
     rentnumber: { type: Number, required: true, unique: true, index: true },
     username: { type: String, required: true, trim: true },
