@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const returncarSchema = new mongoose.Schema({
-    returnnumber: { type: Number},
-    rentnumber: { type: String},
-    returndate: { type: Date},
+    returnnumber: { type: Number, required: true, unique: true, index: true },
+    rentnumber: { type: String, required: true },
+    returndate: { type: Date, required: true },
 }, { timestamps: true });
 
 // Antes de guardar, obtener el último returnnumber y asignar el siguiente
