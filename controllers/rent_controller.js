@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const moment = require('moment');
 const Rent = require('../models/rent_model');
 const Car = require('../models/car_model');
+const User = require('../models/user_model');
 
 const listRent = async (req, res) => {
     try {
@@ -57,6 +58,7 @@ const createRent = async (req, res) => {
         }
 
         await Car.findOneAndUpdate({ platenumber }, { status: 'no disponible' });
+        await User.findOne({username})
 
         const username = req.session.username;
 
