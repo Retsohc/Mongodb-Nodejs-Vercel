@@ -33,6 +33,8 @@ router.put('/api/cars/:platenumber', carValidations.updateCarValidation, carCont
 //Ruta DELETE para borrar un auto
 router.delete('/api/cars/:platenumber', carController.deleteCar);
 
+//Ruta GET para ver la lista de rentas
+router.get('/api/rent', rentController.listRent)
 //Ruta POST para crear una renta
 router.post('/api/rent', rentValidations.createRentValidation, rentController.createRent);
 

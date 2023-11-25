@@ -3,6 +3,22 @@ const moment = require('moment');
 const Rent = require('../models/rent_model');
 const Car = require('../models/car_model');
 
+const listRent = async (req, res) => {
+    try {
+        const rentList = await Rent.find();
+
+        //Para saber si hay rentas registrados
+        if (rentList.length === 0) {
+            return res.status(404).json({ mensaje: 'No hay rentas registradas' });
+        }
+
+        res.status(200).json({ rentList });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
 const createRent = async (req, res) => {
     const errors = validationResult(req);
 
@@ -55,4 +71,4 @@ const createRent = async (req, res) => {
     }
 };
 
-module.exports = {createRent};
+module.exports = {createRent, listRent};
