@@ -52,10 +52,11 @@ const createReturncar = async (req, res) => {
         if (car.status !== 'no disponible') {
             return res.status(400).json({ error: 'El automóvil no está registrado como rentado' });
         }
-
+        
+        const { platenumber: rentedPlateNumber} = rent;
         await Car.findOneAndUpdate({ platenumber }, { status: 'disponible' });
 
-        const returncar = new Returncar(req.body);
+        const returncar = new Returncar({rentnumber, platenumber, returndate, rentedPlateNumber});
         await returncar.save();
 
         res.status(201).json({ mensaje: 'Devolución creada exitosamente' });

@@ -9,8 +9,8 @@ const returncarSchema = new mongoose.Schema({
 // Antes de guardar, obtener el último returnnumber y asignar el siguiente
 returncarSchema.pre('save', async function (next) {
     try {
-        const lastRent = await Rent.findOne().sort({ returnnumber: -1 });
-        this.returnnumber = lastRent ? lastRent.returnnumber + 1 : 1;
+        const lastreturncar = await Returncar.findOne().sort({ returnnumber: -1 });
+        this.returnnumber = lastreturncar ? lastreturncar.returnnumber + 1 : 1;
         next();
     } catch (error) {
         next(error);
