@@ -36,6 +36,8 @@ router.delete('/api/cars/:platenumber', carController.deleteCar);
 //Ruta POST para crear una renta
 router.post('/api/rent', rentValidations.createRentValidation, rentController.createRent);
 
+//Ruta GET para ver la lista de devoluciones
+router.get('/api/returncar', returncarController.listReturncar)
 //Ruta POST para crear una devolución
 router.post('/api/returncar', returncarValidations.createReturncarValidation, returncarController.createReturncar);
 

@@ -3,6 +3,22 @@ const Returncar = require('../models/returncar_model');
 const Rent = require('../models/rent_model');
 const Car = require('../models/car_model');
 
+const listReturncar = async (req, res) => {
+    try {
+        const returncarList = await Returncar.find();
+
+        //Para saber si hay autos registrados
+        if (returncarList.length === 0) {
+            return res.status(404).json({ mensaje: 'No hay devoluciones de autos registradas' });
+        }
+
+        res.status(200).json({ returncarList });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
 const createReturncar = async (req, res) => {
     const errors = validationResult(req);
 
@@ -49,6 +65,4 @@ const createReturncar = async (req, res) => {
     }
 };
 
-module.exports = {
-    createReturncar
-};
+module.exports = {createReturncar, listReturncar};
