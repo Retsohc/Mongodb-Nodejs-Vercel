@@ -26,6 +26,8 @@ router.post('/api/forgotpassword', userValidations.forgotPasswordValidation, use
 router.post('/api/cars', carValidations.createCarValidation, carController.createCar);
 //Ruta GET para ver la lista de autos que solo se encuentran disponibles
 router.get('/api/cars', carController.getAvailableCars);
+//Ruta GET para ver lista de autos que no se encuentran disponibles
+router.get('/api/carsunavailable', carController.getUnavailableCars);
 //Ruta GET para buscar un auto en específico
 router.get('/api/cars/:platenumber', carController.getCarByPlateNumber);
 //Ruta PUT para actualizar un auto

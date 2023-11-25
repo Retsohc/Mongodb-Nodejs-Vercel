@@ -34,6 +34,15 @@ const getAvailableCars = async (req, res) => {
     }
 };
 
+const getUnavailableCars = async (req, res) => {
+    try {
+        const cars = await Car.find({ status: 'no disponible' });
+        res.json({ cars });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener la lista de automóviles no disponibles' });
+    }
+};
+
 const getCarByPlateNumber = async (req, res) => {
     try {
         const car = await Car.findOne({ platenumber: req.params.platenumber });
@@ -85,4 +94,4 @@ const deleteCar = async (req, res) => {
     }
 };
 
-module.exports = {createCar, getAvailableCars, getCarByPlateNumber, updateCar, deleteCar};
+module.exports = {createCar, getAvailableCars, getUnavailableCars,getCarByPlateNumber, updateCar, deleteCar};
